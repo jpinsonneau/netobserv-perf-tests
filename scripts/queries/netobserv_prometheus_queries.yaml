@@ -136,6 +136,10 @@
 - query: (sum(netobserv_agent_flow_batch_in_flight_batches) by (pod, node) or on() vector(0))
   metricName: ebpfFlowBatchInFlightBatches
 
+# Flow records forwarded from each agent's hashmap per minute
+- query: (sum(rate(netobserv_agent_evicted_flows_total{source="hashmap"}[1m]) * 60) by (pod, node) or on() vector(0))
+  metricName: ebpfFlowsEvictedPerMinuteByAgent
+
 # Batches rejected by the in-flight memory budget or exporter queue per minute
 - query: (sum(increase(netobserv_agent_dropped_flow_batches_total[1m])) by (reason, pod, node) or on() vector(0))
   metricName: ebpfFlowBatchesDroppedPerMinute
